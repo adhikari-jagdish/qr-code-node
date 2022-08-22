@@ -34,7 +34,9 @@ exports.updateQrAmount = async (req, res) => {
                 message: 'QR Amount Updated Successfully'
             });
         }
-        return res.json({ message: 'No entry found for user' });
+        const newQrAmount = new QrAmountModel({ userId, amount });
+        await newQrAmount.save();
+        return res.json({ message: 'QR Amount for new user created successfully' });
 
     } catch (e) {
         return res.status(500).json({
@@ -45,9 +47,9 @@ exports.updateQrAmount = async (req, res) => {
 
 exports.getQrAmountByUser = async (req, res) => {
     try {
-        const { userId } = req.body;
-        let result = await QrAmountModel.find({ 'userId': userId });
-        if (result != null && result.length > 0) {
+        const userId = req.params.id;
+        let result = await QrAmountModel.findOne({ 'userId': userId }).lean();
+        if (result) {
             return res.json({ message: 'Qr Amount listed successfully', data: result });
         } else {
             return res.status(400).json({

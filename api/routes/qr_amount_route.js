@@ -5,6 +5,6 @@ const tokenValidator = require('../middleware/route_protect');
 
 
 router.post('/updateQrAmount', tokenValidator, QrAmountController.updateQrAmount);
-router.post('/getQrAmountByUser', tokenValidator, QrAmountController.getQrAmountByUser);
+router.get('/getQrAmountByUser/:id', QrAmountController.getQrAmountByUser);
 
 module.exports = router;
